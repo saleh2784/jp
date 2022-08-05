@@ -28,6 +28,7 @@ pipeline {
                 echo 'deloyed'
                 sh 'pwd'
                 sh 'cat test.txt'
+                sh 'touch 1.txt'
                 
             }
         }
