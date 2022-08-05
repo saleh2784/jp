@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Hello') {
+        stage('connect to github') {
             steps {
                 echo 'Hello World'
             }
@@ -10,6 +10,21 @@ pipeline {
         stage('git-clone') {
             steps {
                 echo 'the code are cloned'
+            }
+        }
+        stage('build') {
+            steps {
+                echo 'bulding'
+            }
+        }
+        stage('test') {
+            steps {
+                echo 'testind'
+            }
+        }
+        stage('Debloy') {
+            steps {
+                echo 'deloyed'
             }
         }
     }
