@@ -1,10 +1,14 @@
 pipeline {
     agent any
+     parameters {
+        string(name: 'git', defaultValue: "Hello World")
+        string(name: 'test', defaultValue: "done")
+    }
 
     stages {
         stage('connect to github') {
             steps {
-                echo 'Hello World'
+                echo {params.git}
             }
         }
         stage('git-clone') {
@@ -20,7 +24,7 @@ pipeline {
         }
         stage('test') {
             steps {
-                echo 'testind'
+                echo {parameters.test}
             }
         }
         stage('Debloy') {
