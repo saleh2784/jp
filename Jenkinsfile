@@ -4,10 +4,10 @@ pipeline {
           USERNAME='racha10r@gmail.com'
           ACCESS_KEY='iHnnmi0atXDjDKIqckdBH0gU72Uf8zJb76EyNlXjzvGPzvr54'
           TUNNEL=true
+          test=deploy
         }
     parameters {
         string(name: 'git', defaultValue: "CICD")
-        string(name: 'test', defaultValue: "deploy")
     }
 
     stages {
