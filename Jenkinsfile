@@ -1,6 +1,10 @@
 pipeline {
     agent any
-
+    environment{
+          USERNAME='racha10r@gmail.com'
+          ACCESS_KEY='iHnnmi0atXDjDKIqckdBH0gU72Uf8zJb76EyNlXjzvGPzvr54'
+          TUNNEL=true
+        }
     parameters {
         string(name: 'git', defaultValue: "Hello World")
         string(name: 'test', defaultValue: "done")
@@ -14,7 +18,9 @@ pipeline {
         }
         stage('git-clone') {
             steps {
-                echo 'the repo was cloned'
+                echo env.USERNAME
+                echo env.ACCESS_KEY
+                echo env.TUNNEL
                 pwd()
             }
         }
