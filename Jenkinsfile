@@ -27,7 +27,8 @@ pipeline {
             steps {
                 echo 'deloyed'
                 sh 'pwd'
-                sh 'ls'
+                sh 'cat test.txt'
+                
             }
         }
     }
