@@ -1,6 +1,7 @@
 pipeline {
     agent any
-     parameters {
+
+    parameters {
         string(name: 'git', defaultValue: "Hello World")
         string(name: 'test', defaultValue: "done")
     }
@@ -13,7 +14,7 @@ pipeline {
         }
         stage('git-clone') {
             steps {
-                echo 'the code are cloned'
+                echo "${env.user}"
                 pwd()
             }
         }
