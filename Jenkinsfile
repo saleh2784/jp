@@ -31,7 +31,7 @@ pipeline {
         }
         stage('test') {
             steps {
-                echo "${params.test}"
+                echo env.test
             }
         }
         stage('Debloy') {
