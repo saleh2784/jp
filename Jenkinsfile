@@ -8,6 +8,7 @@ pipeline {
         }
     parameters {
         string(name: 'git', defaultValue: "CICD")
+        choice (name: 'pool', choices: ['CI', 'Test', 'CD'], )
     }
 
     stages {
