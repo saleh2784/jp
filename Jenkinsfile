@@ -14,7 +14,7 @@ pipeline {
         }
         stage('git-clone') {
             steps {
-                echo "${env.user}"
+                echo 'the repo was cloned'
                 pwd()
             }
         }
