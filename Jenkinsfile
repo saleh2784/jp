@@ -10,11 +10,13 @@ pipeline {
         stage('git-clone') {
             steps {
                 echo 'the code are cloned'
+                pwd()
             }
         }
         stage('build') {
             steps {
                 echo 'bulding'
+                readFile '/Users/user/Desktop/test.rtf'
             }
         }
         stage('test') {
@@ -25,6 +27,7 @@ pipeline {
         stage('Debloy') {
             steps {
                 echo 'deloyed'
+                archiveArtifacts artifacts: 'saleh.zip', followSymlinks: false
             }
         }
     }
