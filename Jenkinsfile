@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('connect to github') {
             steps {
-                echo ${params.git}
+                echo "${params.git}"
             }
         }
         stage('git-clone') {
@@ -24,7 +24,7 @@ pipeline {
         }
         stage('test') {
             steps {
-                echo ${parameters.test}
+                echo "${parameters.test}"
             }
         }
         stage('Debloy') {
