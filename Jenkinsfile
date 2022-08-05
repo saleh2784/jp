@@ -26,7 +26,8 @@ pipeline {
         stage('Debloy') {
             steps {
                 echo 'deloyed'
-                sh 'archiveArtifacts artifacts: 'saleh.zip', followSymlinks: false'
+                sh 'pwd'
+                sh 'ls'
             }
         }
     }
