@@ -18,9 +18,9 @@ pipeline {
         }
         stage('git-clone') {
             steps {
-                echo 'user name is : ' env.USERNAME
-                echo 'your access key is : 'env.ACCESS_KEY
-                echo 'your tunnel are : 'env.TUNNEL
+                echo "user name is :" env.USERNAME
+                echo "your access key is :" env.ACCESS_KEY
+                echo "your tunnel are :" env.TUNNEL
                 pwd()
             }
         }
