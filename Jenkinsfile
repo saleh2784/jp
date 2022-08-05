@@ -16,7 +16,6 @@ pipeline {
         stage('build') {
             steps {
                 echo 'bulding'
-                readFile '/Users/user/Desktop/test.rtf'
             }
         }
         stage('test') {
