@@ -6,8 +6,8 @@ pipeline {
           TUNNEL=true
         }
     parameters {
-        string(name: 'git', defaultValue: "Hello World")
-        string(name: 'test', defaultValue: "done")
+        string(name: 'git', defaultValue: "CICD")
+        string(name: 'test', defaultValue: "deploy")
     }
 
     stages {
