@@ -1,0 +1,115 @@
+import boto3
+import uuid
+
+s3_client = boto3.client('s3')
+s3_resource = boto3.resource('s3')
+
+
+def generate_bucket_name(bucket_prefix):
+    return ''.join([bucket_prefix, str(uuid.uuid4())])
+
+
+def create_bucket(BUCKET_NAME):
+    YOUR_BUCKET_NAME = generate_bucket_name(BUCKET_NAME)
+    print(f"Your first bucket name is: {YOUR_BUCKET_NAME}")
+    s3_resource_status = s3_resource.create_bucket(
+        Bucket=YOUR_BUCKET_NAME,
+        CreateBucketConfiguration=
+        {'LocationConstraint': 'eu-west-2'}
+    )
+    return YOUR_BUCKET_NAME
+
+
+def create_bucket_2(BUCKET_NAME_2):
+    YOUR_BUCKET_NAME_2 = generate_bucket_name(BUCKET_NAME_2)
+    print(f"Your second bucket name is: {YOUR_BUCKET_NAME_2}")
+    s3_resource_status = s3_resource.create_bucket(
+        Bucket=YOUR_BUCKET_NAME_2,
+        CreateBucketConfiguration=
+        {'LocationConstraint': 'eu-west-1'}
+    )
+    return YOUR_BUCKET_NAME_2
+
+
+def find_my_bucket(substr):
+    response = s3_client.list_buckets()
+    for bucket in response['Buckets']:
+        if substr in bucket.get('Name'):
+            print(f"Bucket: {bucket['Name']}")
+            print(f"All attributes: {bucket}")
+            return bucket['Name']
+
+
+def find_my_bucket_2(substr2):
+    response = s3_client.list_buckets()
+    for bucket in response['Buckets']:
+        if substr2 in bucket.get('Name'):
+            print(f"Bucket: {bucket['Name']}")
+            print(f"All attributes: {bucket}")
+            return bucket['Name']
+
+
+#
+def delete_bucket(bucket):
+    try:
+        response = s3_client.delete_bucket(
+            Bucket=bucket
+        )
+        if response['ResponseMetadata']['HTTPStatusCode'] in [204, 200]:
+            return True
+    except Exception as e:
+        print("Failed to delete bucket")
+
+
+result_of_create_bucket = create_bucket("saleh-bucket-")
+result_of_create_bucket_2 = create_bucket_2("saleh-training-")
+bucket_name = find_my_bucket("saleh-bucket-")
+bucket_name_2 = find_my_bucket_2("saleh-training-")
+
+result = delete_bucket(bucket_name)
+print(f"Delete bucket: {result}")
+
+
+def create_temp_file(size, file_name, file_content):
+    random_file_name = ''.join([str(uuid.uuid4().hex[:6]), file_name])
+    with open(random_file_name, 'w') as f:
+        f.write(str(file_content) * size)
+        return random_file_name
+
+
+first_file_name = create_temp_file(300, 'saleh_file_test.txt', 'f')
+first_bucket = s3_resource.Bucket(name=bucket_name)
+first_object = s3_resource.Object(
+    bucket_name=bucket_name, key=first_file_name)
+
+s3_resource.meta.client.upload_file(
+    Filename=first_file_name, Bucket=bucket_name, Key=first_file_name)
+
+second_file_name = create_temp_file(300, 'saleh_file_test2.txt', 'f')
+second_bucket = s3_resource.Bucket(name=bucket_name_2)
+second_object = s3_resource.Object(
+    bucket_name=bucket_name_2, key=second_file_name)
+
+s3_resource.meta.client.upload_file(
+    Filename=second_file_name, Bucket=bucket_name_2, Key=second_file_name)
+
+### list the opjects in the bucket
+
+for first_object in first_bucket.objects.all():
+    print((bucket_name[0:12]), first_object.key)
+
+for second_object in second_bucket.objects.all():
+    print((bucket_name_2[0:14]), second_object.key)
+
+s3_resource.Object(bucket_name, first_file_name).download_file(
+    f'/tmp/{first_file_name}')
+
+
+## NTC 
+def copy_to_bucket(bucket_from_name, bucket_to_name, file_name):
+    copy_source = {
+        'Bucket': bucket_from_name,
+        'Key': file_name
+    }
+    s3_resource.Object(bucket_to_name, file_name).copy(copy_source)
+    copy_to_bucket(bucket_name, bucket_name_2, first_file_name)
