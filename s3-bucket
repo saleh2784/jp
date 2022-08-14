@@ -136,7 +136,7 @@ second_object.upload_file(second_file_name, ExtraArgs={
 second_object_acl = second_object.Acl()
 
 # see who has access to your objec
-second_object_acl.grants
+second_object_acl.grants()
 
 #  make your object private again, without needing to re-upload it :
 response = second_object_acl.put(ACL='private')
@@ -152,7 +152,7 @@ third_object.upload_file(third_file_name, ExtraArgs={
 
 #  check the algorithm that was used to encrypt the file:
 
-third_object.server_side_encryptio
+third_object.server_side_encryptio()
 
 # storage
 # reupload the third_object and set its storage class to Standard_IA:
@@ -164,7 +164,7 @@ third_object.upload_file(third_file_name, ExtraArgs={
 # Reload the object, and you can see its new storage class:
 
 third_object.reload()
-third_object.storage_class
+third_object.storage_class()
 
 # Versionin
 # Enable versioning for the first bucket !! NTC (bucket)
