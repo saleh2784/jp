@@ -232,5 +232,3 @@ s3_resource.Bucket(second_bucket).delete()
 # or
 s3_resource.meta.client.delete_bucket(Bucket=first_bucket)
 s3_resource.meta.client.delete_bucket(Bucket=second_bucket)
-
-
