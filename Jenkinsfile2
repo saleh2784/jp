@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Initialize') {
+            steps {
+                cleanWs()
+            }
+        }
+        stage('Get SCM') {
+            steps {
+                git "https://github.com/yanivomc/docker-cicd.git"
+            }
+        }
+        stage('docker build'){
+            steps {
+                docker build -t saleh-app . 
+            }
+        }
+        stage('docker Deploy'){
+            steps {
+                docker run -itd -name saleh-app saleh-app &  
+            }
+        }
+    }   
+}
+
