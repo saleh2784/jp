@@ -40,10 +40,10 @@ def find_my_bucket(substr):
             return bucket['Name']
 
 
-def find_my_bucket_2(substr2):
+def find_my_bucket_2(substr):
     response = s3_client.list_buckets()
     for bucket in response['Buckets']:
-        if substr2 in bucket.get('Name'):
+        if substr in bucket.get('Name'):
             print(f"Bucket: {bucket['Name']}")
             print(f"All attributes: {bucket}")
             return bucket['Name']
