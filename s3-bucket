@@ -15,7 +15,7 @@ def create_bucket(BUCKET_NAME):
     s3_resource_status = s3_resource.create_bucket(
         Bucket=YOUR_BUCKET_NAME,
         CreateBucketConfiguration=
-        {'LocationConstraint': 'eu-west-2'}
+        {'LocationConstraint': 'eu-west-1'}
     )
     return YOUR_BUCKET_NAME
 
@@ -126,18 +126,21 @@ def copy_to_bucket(bucket_from_name, bucket_to_name, file_name):
 
 s3_resource.Object(second_bucket, first_file_name).delete()
 
+# all ok until here ##
 # ACL (Access Control Lists) page 15
 second_file_name = create_temp_file(400, 'secondfile.txt', 's')
 second_object = s3_resource.Object(first_bucket.name, second_file_name)
 second_object.upload_file(second_file_name, ExtraArgs={
-    'ACL': 'public-read'})
+                            'ACL': 'public-read'})
 
 second_object_acl = second_object.Acl()
 
-# see who has access to your object, use the grants attribute:
+# see who has access to your objec
+second_object_acl.grants
 
-second_object_acl.grants()
+#  make your object private again, without needing to re-upload it :
 response = second_object_acl.put(ACL='private')
+second_object_acl.grants()
 
 # Encryption
 # Create a new file and upload it using ServerSideEncryption:
@@ -145,27 +148,35 @@ response = second_object_acl.put(ACL='private')
 third_file_name = create_temp_file(300, 'thirdfile.txt', 't')
 third_object = s3_resource.Object(first_bucket, third_file_name)
 third_object.upload_file(third_file_name, ExtraArgs={
-    'ServerSideEncryption': 'AES256'})
+                            'ServerSideEncryption': 'AES256'})
 
-# Storage page 17
-# For example, reupload the third_object and set its storage class to Standard_IA:
+#  check the algorithm that was used to encrypt the file:
+
+third_object.server_side_encryptio
+
+# storage
+# reupload the third_object and set its storage class to Standard_IA:
+
 third_object.upload_file(third_file_name, ExtraArgs={
-    'ServerSideEncryption': 'AES256',
-    'StorageClass': 'STANDARD_IA'})
+                        'ServerSideEncryption': 'AES256',
+                        'StorageClass': 'STANDARD_IA'})
 
+# Reload the object, and you can see its new storage class:
 
+third_object.reload()
+third_object.storage_class
+
+# Versionin
 # Enable versioning for the first bucket !! NTC (bucket)
 
-def enable_bucket_versioning(bucket):
+def enable_bucket_versioning(bucket_name):
     bkt_versioning = s3_resource.BucketVersioning(bucket_name)
     bkt_versioning.enable()
     print(bkt_versioning.status)
 
-
 enable_bucket_versioning(first_bucket)
 
-# create two new versions for the first file Object, one with the contents of the original file and one with the
-# contents of the third file:
+# create two new versions for the first file Object, one with the contents of the original file and one with the contents of the third file:
 
 s3_resource.Object(first_bucket, first_file_name).upload_file(
     first_file_name)
@@ -176,6 +187,10 @@ s3_resource.Object(first_bucket, first_file_name).upload_file(
 
 s3_resource.Object(first_bucket, second_file_name).upload_file(
     second_file_name)
+
+#  retrieve the latest available version of your objects like so :
+
+s3_resource.Object(first_bucket, first_file_name).version_id
 
 # Bucket Traversal
 for bucket in s3_resource.buckets.all():
@@ -205,12 +220,17 @@ def delete_all_objects(bucket_name):
 
 delete_all_objects(first_bucket)
 
-# upload a file to the second bucket. This bucket doesn’t have versioning enable
+# upload a file to the second bucket. This bucket doesn’t have versioning enable, and thus the version will be null. Apply the same function to remove the contents
 
 s3_resource.Object(second_bucket, first_file_name).upload_file(first_file_name)
 delete_all_objects(second_bucket)
 
 # Deleting Buckets
 s3_resource.Bucket(first_bucket).delete()
+s3_resource.Bucket(second_bucket).delete()
+
 # or
+s3_resource.meta.client.delete_bucket(Bucket=first_bucket)
 s3_resource.meta.client.delete_bucket(Bucket=second_bucket)
+
+
