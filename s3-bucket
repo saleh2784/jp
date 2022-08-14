@@ -190,7 +190,7 @@ s3_resource.Object(first_bucket, second_file_name).upload_file(
 
 #  retrieve the latest available version of your objects like so :
 
-s3_resource.Object(first_bucket, first_file_name).version_id
+s3_resource.Object(first_bucket, first_file_name).version_id()
 
 # Bucket Traversal
 for bucket in s3_resource.buckets.all():
