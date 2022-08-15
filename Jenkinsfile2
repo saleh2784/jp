@@ -7,11 +7,11 @@ pipeline {
         //         cleanWs()
         //     }
         // }
-        stage('Get SCM') {
-            steps {
-                git "https://github.com/yanivomc/docker-cicd.git"
-            }
-        }
+        // stage('Get SCM') {
+        //     steps {
+        //         git "https://github.com/yanivomc/docker-cicd.git"
+        //     }
+        // }
         stage('test') {
             steps {
                 echo 'hi'
