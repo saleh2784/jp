@@ -9,7 +9,7 @@ pipeline {
         }
         stage('Get SCM') {
             steps {
-                git "https://github.com/saleh2784/jp.git"
+                git "https://github.com/yanivomc/docker-cicd.git"
                 sh "cat Jenkinsfile2"
             }
         }
