@@ -15,11 +15,12 @@ pipeline {
         stage('docker build'){
             steps {
                 docker build -t saleh-app . 
+                docker images
             }
         }
         stage('docker Deploy'){
             steps {
-                docker run -itd -name saleh-app saleh-app &  
+                docker run -itd saleh-app &  
             }
         }
     }   
