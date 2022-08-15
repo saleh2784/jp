@@ -2,14 +2,19 @@ pipeline {
     agent any
 
     stages {
-        stage('Initialize') {
-            steps {
-                cleanWs()
-            }
-        }
+        // stage('Initialize') {
+        //     steps {
+        //         cleanWs()
+        //     }
+        // }
         stage('Get SCM') {
             steps {
                 git "https://github.com/yanivomc/docker-cicd.git"
+            }
+        }
+        stage('test') {
+            steps {
+                echo 'hi'
             }
         }
         // stage('docker build'){
