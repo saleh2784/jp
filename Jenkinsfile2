@@ -9,18 +9,19 @@ pipeline {
         }
         stage('Get SCM') {
             steps {
-                git "https://github.com/yanivomc/docker-cicd.git"
+                git "https://github.com/saleh2784/jp.git"
+                sh "cat Jenkinsfile2"
             }
         }
         stage('docker build'){
             steps {
-                docker build -t saleh-app . 
-                docker images
+                sh "docker build -t saleh-app . "
+                sh "docker images"
             }
         }
         stage('docker Deploy'){
             steps {
-                docker run -itd saleh-app &  
+                sh "docker run -itd saleh-app &"  
             }
         }
     }   
