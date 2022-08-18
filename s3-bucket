@@ -226,9 +226,11 @@ s3_resource.Object(second_bucket, first_file_name).upload_file(first_file_name)
 delete_all_objects(second_bucket)
 
 # Deleting Buckets
+
 s3_resource.Bucket(first_bucket).delete()
 s3_resource.Bucket(second_bucket).delete()
 
 # or
+
 s3_resource.meta.client.delete_bucket(Bucket=first_bucket)
 s3_resource.meta.client.delete_bucket(Bucket=second_bucket)
