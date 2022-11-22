@@ -1,0 +1,54 @@
+#NOTE THAT THERE ARE ERRORS IN THE YML FILE FOR YOU TO FIX
+version: '3' # Docker-compose yml version for docker compose builder
+services: 
+  
+  web: 
+   #image: mytest:latest
+   build: ./roles/web/Dockerfile/    
+   depends_on:
+      db_mysql:
+          condition: service_healthy
+   
+   ports: 
+     - 8080:8080
+   volumes: 
+     - ./artifactsa:/code
+   networks: # Define netwroks per service / role
+     - net_layer
+   
+  
+    #entrypoint: ## this wil overide the CMD / entrypoint in our dockerfile
+    #  - java 
+    #  - -jar 
+    #  - -Dspring.profiles.active=mysql 
+    #  - /app/spring-music.jar
+   
+  db_mysql:
+    image: wangxian/alpine-mysql
+    environment: # env variables 
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=music
+    ports:
+      - 3306:3306
+    networks:
+      - net_layer
+    volumes: 
+      - logicalVoloume01:/app
+    healthcheck:
+        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+        timeout: 20s
+        retries: 10
+
+
+# this will replace:  
+ #docker run --rm -itd --network db_layer  --name db_mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -e MYSQL_DATABASE=music -p 3306:3306 -v $(pwd):/app wangxian/alpine-mysql
+
+networks: # custome configuration per network defined
+ net_layer:
+  driver: bridge
+ 
+
+volumes:
+ logicalVoloume01:
+ 
+
